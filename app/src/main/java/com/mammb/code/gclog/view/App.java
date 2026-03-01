@@ -33,7 +33,7 @@ public class App extends Application {
         Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
 
         var borderPane = new BorderPane();
-        borderPane.setCenter(new ChatPane());
+        borderPane.setCenter(new ChartPane());
 
         var scene  = new Scene(borderPane, 800, 600);
         stage.setScene(scene);

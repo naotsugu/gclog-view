@@ -31,6 +31,11 @@ java {
 
 application {
     mainClass = "com.mammb.code.gclog.view.Main"
+    applicationDefaultJvmArgs = listOf(
+        "-Xms16m",
+        "-XX:+UseSerialGC", "-XX:MinHeapFreeRatio=5", "-XX:MaxHeapFreeRatio=10", "-XX:-ShrinkHeapInSteps", "-DidleGcDelayMillis=3000",
+        "-Xshare:off",
+    )
 }
 
 tasks.named<Test>("test") {
