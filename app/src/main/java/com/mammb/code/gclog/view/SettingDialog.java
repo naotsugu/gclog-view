@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
  * The chart setting dialog.
  * @author Naotsugu Kobayashi
  */
-public class ChartSettingDialog extends Dialog<ChartSettingDialog.Range> {
+public class SettingDialog extends Dialog<SettingDialog.Range> {
 
     /**
      * The range.
@@ -38,7 +38,7 @@ public class ChartSettingDialog extends Dialog<ChartSettingDialog.Range> {
     private final DateTimePicker lowerPicker;
     private final DateTimePicker upperPicker;
 
-    public ChartSettingDialog(LocalDateTime lower, LocalDateTime upper) {
+    public SettingDialog(LocalDateTime lower, LocalDateTime upper) {
 
         setTitle("Chart Setting");
 
