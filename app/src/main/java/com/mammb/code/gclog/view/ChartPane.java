@@ -31,10 +31,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +54,7 @@ public class ChartPane extends StackPane {
     private static final System.Logger log = System.getLogger(ChartPane.class.getName());
 
     public ChartPane() {
-        getChildren().add(new Label("Drop gc log file here"));
+        getChildren().add(buildInitLabel());
         setOnDragDetected(this::handleDragDetect);
         setOnDragOver(this::handleDragOver);
         setOnDragDropped(this::handleDragDropped);
@@ -57,6 +62,7 @@ public class ChartPane extends StackPane {
         setOnKeyPressed(this::handleKeyPressed);
         setFocusTraversable(true);
     }
+
 
     private void handleDragDetect(MouseEvent e) { }
 
@@ -208,7 +214,9 @@ public class ChartPane extends StackPane {
         final double[] pressLower = { 0 };
         final double[] pressUpper = { 0 };
         areaChart.setOnMousePressed(e -> {
-            if (e.isPrimaryButtonDown()) {
+            if (e.getClickCount() == 2) {
+                openRangeDialog(xAxis);
+            } else if (e.isPrimaryButtonDown()) {
                 pressX[0] = e.getX();
                 pressLower[0] = xAxis.getLowerBound();
                 pressUpper[0] = xAxis.getUpperBound();
@@ -226,6 +234,16 @@ public class ChartPane extends StackPane {
         areaChart.setOnMouseReleased(e -> areaChart.setCursor(Cursor.DEFAULT));
 
         return areaChart;
+    }
+
+    private void openRangeDialog(NumberAxis xAxis) {
+        var dialog = new ChartSettingDialog(
+            LocalDateTime.ofInstant(Instant.ofEpochMilli((long) xAxis.getLowerBound()), ZoneId.systemDefault()),
+            LocalDateTime.ofInstant(Instant.ofEpochMilli((long) xAxis.getUpperBound()), ZoneId.systemDefault()));
+        dialog.showAndWait().ifPresent(range -> {
+            xAxis.setLowerBound(range.from().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+            xAxis.setUpperBound(range.to().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        });
     }
 
     private void openWithChooser() {
@@ -254,6 +272,13 @@ public class ChartPane extends StackPane {
         return ticks.stream()
                 .min(Comparator.comparingDouble(d -> Math.abs(d - raw)))
                 .orElse(raw);
+    }
+
+    private Label buildInitLabel() {
+        String shortcut = System.getProperty("os.name").toLowerCase().contains("mac") ? "⌘" : "Ctrl";
+        var label = new Label("Drop gc log file here, or open with " + shortcut + " + o");
+        label.setFont(Font.font("System", FontWeight.BOLD, 20));
+        return label;
     }
 
 }

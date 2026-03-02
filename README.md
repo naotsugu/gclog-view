@@ -10,6 +10,7 @@ A simple viewer for GC log files.
 - Drop a GC log file onto the window, or press `Ctrl`(`⌘`) + `o` to select a log file.
 - You can zoom in and out of the graph with `Ctrl`(`⌘`) + mouse wheel.
 - You can pan the graph by dragging it or using `←` and `→` keys.
+- Double-click on the graph to manually set the X-axis range.
 
 
 ## Building
