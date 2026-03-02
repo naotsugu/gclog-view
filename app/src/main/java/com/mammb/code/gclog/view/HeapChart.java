@@ -33,6 +33,8 @@ import java.util.List;
  */
 public class HeapChart extends AreaChart<Number, Number> {
 
+    private ZoneId zoneId = ZoneId.of("UTC");
+
     public HeapChart(GcLog gcLog) {
 
         super(new NumberAxis(gcLog.timeMin(), gcLog.timeMax(), niceTickUnit(gcLog.timeMax() - gcLog.timeMin())),
@@ -41,7 +43,7 @@ public class HeapChart extends AreaChart<Number, Number> {
         var xAxis = (NumberAxis) getXAxis();
         var yAxis = (NumberAxis) getYAxis();
 
-        xAxis.setTickLabelFormatter(new DateLabelFormatter());
+        xAxis.setTickLabelFormatter(new DateLabelFormatter(zoneId));
         xAxis.setAnimated(false);
         yAxis.setAnimated(false);
 
@@ -149,11 +151,14 @@ public class HeapChart extends AreaChart<Number, Number> {
 
     private void openRangeDialog(NumberAxis xAxis) {
         var dialog = new SettingDialog(
-            LocalDateTime.ofInstant(Instant.ofEpochMilli((long) xAxis.getLowerBound()), ZoneId.of("UTC")),
-            LocalDateTime.ofInstant(Instant.ofEpochMilli((long) xAxis.getUpperBound()), ZoneId.of("UTC")));
-        dialog.showAndWait().ifPresent(range -> {
-            xAxis.setLowerBound(range.from().atZone(ZoneId.of("UTC")).toInstant().toEpochMilli());
-            xAxis.setUpperBound(range.to().atZone(ZoneId.of("UTC")).toInstant().toEpochMilli());
+            LocalDateTime.ofInstant(Instant.ofEpochMilli((long) xAxis.getLowerBound()), zoneId),
+            LocalDateTime.ofInstant(Instant.ofEpochMilli((long) xAxis.getUpperBound()), zoneId),
+            zoneId);
+        dialog.showAndWait().ifPresent(setting -> {
+            zoneId = setting.zoneId();
+            xAxis.setLowerBound(setting.from().atZone(zoneId).toInstant().toEpochMilli());
+            xAxis.setUpperBound(setting.to().atZone(zoneId).toInstant().toEpochMilli());
+            xAxis.setTickLabelFormatter(new DateLabelFormatter(zoneId));
         });
     }
 

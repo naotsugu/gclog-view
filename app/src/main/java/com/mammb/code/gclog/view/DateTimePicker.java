@@ -31,14 +31,12 @@ import java.time.format.DateTimeFormatter;
  */
 public class DateTimePicker extends DatePicker {
 
-    private static final String PATTERN = "yyyy-MM-dd HH:mm:ss";
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(PATTERN);
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private final ObjectProperty<LocalDateTime> dateTimeValue = new SimpleObjectProperty<>(LocalDateTime.now());
 
     public DateTimePicker() {
         setConverter(new InternalConverter());
-        getEditor().setPrefColumnCount(PATTERN.length());
 
         valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {

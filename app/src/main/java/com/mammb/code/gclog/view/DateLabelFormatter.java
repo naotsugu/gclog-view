@@ -27,11 +27,20 @@ import java.time.format.DateTimeFormatter;
 public class DateLabelFormatter extends StringConverter<Number> {
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd\nHH:mm:ss");
+    private final ZoneId zoneId;
+
+    public DateLabelFormatter(ZoneId zoneId) {
+        this.zoneId = zoneId;
+    }
+
+    public DateLabelFormatter() {
+        this(ZoneId.of("UTC"));
+    }
 
     @Override
     public String toString(Number number) {
         return Instant.ofEpochMilli(number.longValue())
-                .atZone(ZoneId.of("UTC"))
+                .atZone(zoneId)
                 .format(formatter);
     }
 

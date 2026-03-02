@@ -17,28 +17,33 @@ package com.mammb.code.gclog.view;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.util.StringConverter;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 /**
  * The chart setting dialog.
  * @author Naotsugu Kobayashi
  */
-public class SettingDialog extends Dialog<SettingDialog.Range> {
+public class SettingDialog extends Dialog<SettingDialog.Setting> {
 
     /**
-     * The range.
+     * The setting.
      * @param from the form date time
      * @param to the to date time
+     * @param zoneId the zone id
      */
-    public record Range(LocalDateTime from, LocalDateTime to) { }
+    public record Setting(LocalDateTime from, LocalDateTime to, ZoneId zoneId) { }
 
     private final DateTimePicker lowerPicker;
     private final DateTimePicker upperPicker;
+    private final ComboBox<ZoneId> zoneIdComboBox;
 
-    public SettingDialog(LocalDateTime lower, LocalDateTime upper) {
+    public SettingDialog(LocalDateTime lower, LocalDateTime upper, ZoneId zoneId) {
 
         setTitle("Chart Setting");
 
@@ -52,10 +57,35 @@ public class SettingDialog extends Dialog<SettingDialog.Range> {
         upperPicker = new DateTimePicker();
         upperPicker.setDateTimeValue(upper);
 
+        zoneIdComboBox = new ComboBox<>();
+        zoneIdComboBox.getItems().addAll(ZoneId.of("UTC"), ZoneId.systemDefault());
+        zoneIdComboBox.setValue(zoneId);
+        zoneIdComboBox.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(ZoneId zone) {
+                return (zone == null) ? "" : zone.getId();
+            }
+            @Override
+            public ZoneId fromString(String string) {
+                return (string == null) ? null : ZoneId.of(string);
+            }
+        });
+        zoneIdComboBox.valueProperty().addListener((observable, oldZone, newZone) -> {
+            if (oldZone != null && newZone != null) {
+                lowerPicker.setDateTimeValue(
+                    lowerPicker.getDateTimeValue().atZone(oldZone).withZoneSameInstant(newZone).toLocalDateTime());
+                upperPicker.setDateTimeValue(
+                    upperPicker.getDateTimeValue().atZone(oldZone).withZoneSameInstant(newZone).toLocalDateTime());
+            }
+        });
+
+
         grid.add(new Label("From:"), 0, 0);
         grid.add(lowerPicker, 1, 0);
         grid.add(new Label("To:"), 0, 1);
         grid.add(upperPicker, 1, 1);
+        grid.add(new Label("Zone:"), 0, 2);
+        grid.add(zoneIdComboBox, 1, 2);
 
         getDialogPane().setContent(grid);
         getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -65,7 +95,7 @@ public class SettingDialog extends Dialog<SettingDialog.Range> {
                 LocalDateTime from = lowerPicker.getDateTimeValue();
                 LocalDateTime to = upperPicker.getDateTimeValue();
                 if (from != null && to != null && from.isBefore(to)) {
-                    return new Range(from, to);
+                    return new Setting(from, to, zoneIdComboBox.getValue());
                 }
             }
             return null;
