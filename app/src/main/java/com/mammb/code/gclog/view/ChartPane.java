@@ -83,15 +83,14 @@ public class ChartPane extends StackPane {
         }
 
         areaChart().ifPresent(chart -> {
+
             var xAxis = (NumberAxis) chart.getXAxis();
-            double zoomFactor = (e.getDeltaY() > 0) ? 0.9 : 1.1;
-            double mouseX = e.getX();
-
-            // the value on the axis corresponding to the mouse position
-            double mouseValue = xAxis.getValueForDisplay(mouseX).doubleValue();
-
             double lowerBound = xAxis.getLowerBound();
             double upperBound = xAxis.getUpperBound();
+
+            // the value on the axis corresponding to the mouse position
+            double mouseValue = xAxis.getValueForDisplay(e.getX()).doubleValue();
+            double zoomFactor = (e.getDeltaY() > 0) ? 0.9 : 1.1;
 
             double newLowerBound = mouseValue - (mouseValue - lowerBound) * zoomFactor;
             double newUpperBound = mouseValue + (upperBound - mouseValue) * zoomFactor;
@@ -176,12 +175,12 @@ public class ChartPane extends StackPane {
                     updateProgress(i + 1, paths.size());
                 }
             }
-            return build(gcLog);
+            return buildAreaChart(gcLog);
             }
         };
     }
 
-    private AreaChart<Number, Number> build(GcLog gcLog) {
+    private AreaChart<Number, Number> buildAreaChart(GcLog gcLog) {
 
         var sizeSeries = new XYChart.Series<Number, Number>();
         sizeSeries.setName("Heap size");

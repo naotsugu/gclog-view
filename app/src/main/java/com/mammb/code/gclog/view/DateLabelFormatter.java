@@ -26,7 +26,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class DateLabelFormatter extends StringConverter<Number> {
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd\nHH:mm:ss");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd\nHH:mm:ss");
 
     @Override
     public String toString(Number number) {
