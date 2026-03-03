@@ -25,6 +25,6 @@ public class Version {
     String appName = "gclog-view";
 
     /** The version value. */
-    String val = "0.1.0";
+    String val = "0.1.1";
 
 }
