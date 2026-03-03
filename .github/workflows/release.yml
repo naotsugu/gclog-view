@@ -12,15 +12,15 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            asset_name: min-editor-linux-x64
+            asset_name: gclog-view-linux-x64
           - os: ubuntu-24.04-arm
-            asset_name: min-editor-linux-aarch64
+            asset_name: gclog-view-linux-aarch64
           - os: macOS-latest
-            asset_name: min-editor-macos-aarch64
+            asset_name: gclog-view-macos-aarch64
           - os: macos-15-intel
-            asset_name: min-editor-macos-x64
+            asset_name: gclog-view-macos-x64
           - os: windows-latest
-            asset_name: min-editor-windows-x64
+            asset_name: gclog-view-windows-x64
       fail-fast: false
     name: ${{ matrix.os }}
     steps:
