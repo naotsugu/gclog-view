@@ -1,0 +1,57 @@
+name: Create release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            asset_name: min-editor-linux-x64
+          - os: ubuntu-24.04-arm
+            asset_name: min-editor-linux-aarch64
+          - os: macOS-latest
+            asset_name: min-editor-macos-aarch64
+          - os: macos-15-intel
+            asset_name: min-editor-macos-x64
+          - os: windows-latest
+            asset_name: min-editor-windows-x64
+      fail-fast: false
+    name: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: recursive
+      - uses: actions/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+      - uses: gradle/actions/wrapper-validation@v3
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+      - name: Assemble the pkg
+        run: ./gradlew pkg
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset_name }}
+          path: app/build/distributions/*.zip
+
+  create-release:
+    permissions:
+      contents: write
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          pattern: gclog-view-*
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: gclog-view-*/*
