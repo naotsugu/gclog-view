@@ -90,8 +90,8 @@ tasks.register<Exec>("jpackage") {
     val outputDir = project.layout.buildDirectory.dir("jpackage")
     val inputDir = tasks.jar.get().archiveFile.get().asFile.parentFile
 
-    //val iconType = if (os.isWindows) "icon.ico" else if (os.isMacOsX) "icon.icns" else "icon.png"
-    //val iconPath = "${project.rootDir}/docs/icon/${iconType}"
+    val iconType = if (os.isWindows) "icon.ico" else if (os.isMacOsX) "icon.icns" else "icon.png"
+    val iconPath = "${project.rootDir}/docs/icon/${iconType}"
 
     commandLine(commandPath,
         "--type", "app-image",
@@ -99,7 +99,7 @@ tasks.register<Exec>("jpackage") {
         "--dest", outputDir.get().asFile.absolutePath,
         "--input", inputDir.absolutePath,
         "--main-jar", tasks.jar.get().archiveFileName.get(),
-        //"--icon", iconPath,
+        "--icon", iconPath,
 
         "--java-options", "-Xms16m",
         "--java-options", "-XX:+UseSerialGC",

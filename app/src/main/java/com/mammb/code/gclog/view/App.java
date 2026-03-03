@@ -18,8 +18,10 @@ package com.mammb.code.gclog.view;
 import atlantafx.base.theme.NordDark;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import java.util.Objects;
 
 /**
  * The Application.
@@ -38,6 +40,8 @@ public class App extends Application {
         var scene  = new Scene(borderPane, 800, 600);
         stage.setScene(scene);
         stage.setTitle("GC log view");
+        stage.getIcons().add(new Image(
+            Objects.requireNonNull(App.class.getResourceAsStream("/icon.png"))));
         stage.show();
     }
 
