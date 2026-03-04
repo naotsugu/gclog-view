@@ -38,7 +38,7 @@ public class DateTimePicker extends DatePicker {
     public DateTimePicker() {
         setConverter(new InternalConverter());
 
-        valueProperty().addListener((observable, oldValue, newValue) -> {
+        valueProperty().addListener((_, _, newValue) -> {
             if (newValue == null) {
                 dateTimeValue.set(null);
             } else {
@@ -51,7 +51,7 @@ public class DateTimePicker extends DatePicker {
             }
         });
 
-        dateTimeValue.addListener((observable, oldValue, newValue) -> {
+        dateTimeValue.addListener((_, _, newValue) -> {
             if (newValue != null) {
                 LocalDate dateValue = newValue.toLocalDate();
                 boolean forceUpdate = dateValue.equals(valueProperty().get());
@@ -63,7 +63,7 @@ public class DateTimePicker extends DatePicker {
 
         });
 
-        getEditor().focusedProperty().addListener((observable, oldValue, newValue) -> {
+        getEditor().focusedProperty().addListener((_, _, newValue) -> {
             if (!newValue) getEditor().commitValue();
         });
 

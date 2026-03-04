@@ -93,7 +93,7 @@ public class HeapChart extends AreaChart<Number, Number> {
                 xAxis.setUpperBound(pressUpper[0] + valueDiff);
             }
         });
-        setOnMouseReleased(e -> setCursor(Cursor.DEFAULT));
+        setOnMouseReleased(_ -> setCursor(Cursor.DEFAULT));
     }
 
 
@@ -133,18 +133,17 @@ public class HeapChart extends AreaChart<Number, Number> {
         double shift = range * 0.1;
 
         switch (e.getCode()) {
-            case LEFT:
+            case LEFT -> {
                 xAxis.setLowerBound(xAxis.getLowerBound() - shift);
                 xAxis.setUpperBound(xAxis.getUpperBound() - shift);
                 e.consume();
-                break;
-            case RIGHT:
+            }
+            case RIGHT -> {
                 xAxis.setLowerBound(xAxis.getLowerBound() + shift);
                 xAxis.setUpperBound(xAxis.getUpperBound() + shift);
                 e.consume();
-                break;
-            default:
-                // do nothing
+            }
+            default -> { } // do nothing
         }
     }
 
@@ -165,6 +164,9 @@ public class HeapChart extends AreaChart<Number, Number> {
 
     private static double niceTickUnit(double range) {
         final List<Double> ticks = List.of(
+                1d, 2d, 5d,
+                10d, 20d, 50d,
+                100d, 200d, 500d,
                 1000d, 2000d, 5000d,
                 10000d, 15000d, 30000d,
                 60000d, 120000d, 300000d, 600000d,

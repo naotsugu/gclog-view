@@ -31,7 +31,6 @@ public class HeapAggregation extends Aggregation {
     private final ConcurrentLinkedQueue<DataPoint> sizeAggregations = new ConcurrentLinkedQueue<>();
     private final ConcurrentLinkedQueue<DataPoint> usedAggregations = new ConcurrentLinkedQueue<>();
 
-
     @Override
     public boolean hasWarning() {
         return false;

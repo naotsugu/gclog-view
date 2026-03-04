@@ -19,7 +19,7 @@ package com.mammb.code.gclog.view;
  * The application version.
  * @author Naotsugu Kobayashi
  */
-public class Version {
+public interface Version {
 
     /** The application name. */
     String appName = "gclog-view";

@@ -39,7 +39,7 @@ public class App extends Application {
 
         var scene  = new Scene(borderPane, 800, 600);
         stage.setScene(scene);
-        stage.setTitle("GC log view");
+        stage.setTitle(Version.appName + " v" + Version.val);
         stage.getIcons().add(new Image(
             Objects.requireNonNull(App.class.getResourceAsStream("/icon.png"))));
         stage.show();

@@ -50,7 +50,7 @@ public class SettingDialog extends Dialog<SettingDialog.Setting> {
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
-        grid.setPadding(new Insets(20, 20, 10, 10));
+        grid.setPadding(new Insets(10, 10, 10, 10));
 
         lowerPicker = new DateTimePicker();
         lowerPicker.setDateTimeValue(lower);
@@ -70,7 +70,7 @@ public class SettingDialog extends Dialog<SettingDialog.Setting> {
                 return (string == null) ? null : ZoneId.of(string);
             }
         });
-        zoneIdComboBox.valueProperty().addListener((observable, oldZone, newZone) -> {
+        zoneIdComboBox.valueProperty().addListener((_, oldZone, newZone) -> {
             if (oldZone != null && newZone != null) {
                 lowerPicker.setDateTimeValue(
                     lowerPicker.getDateTimeValue().atZone(oldZone).withZoneSameInstant(newZone).toLocalDateTime());

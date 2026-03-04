@@ -29,8 +29,8 @@ import java.util.function.BiConsumer;
  */
 public class GcLog {
 
-    private List<HeapAggregation.DataPoint> sizeSeries = new ArrayList<>();
-    private List<HeapAggregation.DataPoint> usedSeries = new ArrayList<>();
+    private final List<HeapAggregation.DataPoint> sizeSeries = new ArrayList<>();
+    private final List<HeapAggregation.DataPoint> usedSeries = new ArrayList<>();
     private long timeMin = 0;
     private long timeMax = 0;
 

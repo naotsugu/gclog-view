@@ -23,6 +23,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCharacterCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
@@ -44,11 +45,14 @@ public class ChartPane extends StackPane {
 
     public ChartPane() {
         getChildren().add(buildInitLabel());
-        setOnDragDetected(e -> { });
+        setOnDragDetected(this::handleDragDetected);
         setOnDragOver(this::handleDragOver);
         setOnDragDropped(this::handleDragDropped);
         setOnKeyPressed(this::handleKeyPressed);
         setFocusTraversable(true);
+    }
+
+    private void handleDragDetected(MouseEvent e) {
     }
 
     private void handleDragOver(DragEvent e) {
@@ -80,12 +84,12 @@ public class ChartPane extends StackPane {
         getChildren().clear();
         getChildren().add(progressBar);
 
-        task.setOnSucceeded(event -> {
+        task.setOnSucceeded(_ -> {
             getChildren().clear();
             getChildren().add(task.getValue());
             task.getValue().requestFocus();
         });
-        task.setOnFailed(event -> {
+        task.setOnFailed(_ -> {
             getChildren().clear();
             getChildren().add(new Label("Error processing file."));
             log.log(System.Logger.Level.WARNING, "Error processing file.", task.getException());
