@@ -22,6 +22,11 @@ import com.microsoft.gctoolkit.message.DataSourceParser;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a data source channel that allows registering listeners,
+ * publishing messages to a specified channel, and managing its lifecycle.
+ * @author Naotsugu Kobayashi
+ */
 public class PtDataSourceChannel implements DataSourceChannel {
 
     private final List<DataSourceParser> listeners = new ArrayList<>();

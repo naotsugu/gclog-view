@@ -23,6 +23,11 @@ import com.microsoft.gctoolkit.message.JVMEventChannelListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@code PtJVMEventChannel} class implements the {@link JVMEventChannel} interface
+ * and provides a mechanism for managing and notifying listeners of JVM events.
+ * @author Naotsugu Kobayashi
+ */
 public class PtJVMEventChannel implements JVMEventChannel {
 
     private final List<JVMEventChannelListener> listeners = new ArrayList<>();
