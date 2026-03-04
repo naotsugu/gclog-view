@@ -20,15 +20,9 @@ val platform = when {
 
 dependencies {
     implementation(libs.gctoolkit.parser)
-    implementation(libs.gctoolkit.vertx)
     implementation(libs.atlantafx.base)
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-
-    if (os.isMacOsX) {
-        if (arch.isAmd64) runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.118.Final:osx-x86_64")
-        else runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.118.Final")
-    }
 }
 
 java {
