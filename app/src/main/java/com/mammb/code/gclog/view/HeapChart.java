@@ -97,6 +97,24 @@ public class HeapChart extends AreaChart<Number, Number> {
     }
 
 
+    private void zoom(double zoomFactor, double zoomCenter) {
+        var xAxis = (NumberAxis) getXAxis();
+        double lowerBound = xAxis.getLowerBound();
+        double upperBound = xAxis.getUpperBound();
+
+        double newLowerBound = zoomCenter - (zoomCenter - lowerBound) * zoomFactor;
+        double newUpperBound = zoomCenter + (upperBound - zoomCenter) * zoomFactor;
+
+        if (zoomFactor < 1 && (newUpperBound - newLowerBound) < 1000) {
+            // prevent zooming in too much
+            return;
+        }
+
+        xAxis.setLowerBound(newLowerBound);
+        xAxis.setUpperBound(newUpperBound);
+    }
+
+
     private void handleScroll(ScrollEvent e) {
         if (e.getEventType() != ScrollEvent.SCROLL ||
             e.getDeltaY() == 0 ||
@@ -105,23 +123,9 @@ public class HeapChart extends AreaChart<Number, Number> {
         }
 
         var xAxis = (NumberAxis) getXAxis();
-        double lowerBound = xAxis.getLowerBound();
-        double upperBound = xAxis.getUpperBound();
-
-        // the value on the axis corresponding to the mouse position
         double mouseValue = xAxis.getValueForDisplay(e.getX()).doubleValue();
         double zoomFactor = (e.getDeltaY() > 0) ? 0.9 : 1.1;
-
-        double newLowerBound = mouseValue - (mouseValue - lowerBound) * zoomFactor;
-        double newUpperBound = mouseValue + (upperBound - mouseValue) * zoomFactor;
-
-        // prevent zooming in too much
-        if (newUpperBound - newLowerBound < 1000) {
-            return;
-        }
-
-        xAxis.setLowerBound(newLowerBound);
-        xAxis.setUpperBound(newUpperBound);
+        zoom(zoomFactor, mouseValue);
 
         e.consume();
     }
@@ -141,6 +145,16 @@ public class HeapChart extends AreaChart<Number, Number> {
             case RIGHT -> {
                 xAxis.setLowerBound(xAxis.getLowerBound() + shift);
                 xAxis.setUpperBound(xAxis.getUpperBound() + shift);
+                e.consume();
+            }
+            case PLUS, EQUALS -> {
+                double center = (xAxis.getLowerBound() + xAxis.getUpperBound()) / 2;
+                zoom(0.9, center);
+                e.consume();
+            }
+            case MINUS -> {
+                double center = (xAxis.getLowerBound() + xAxis.getUpperBound()) / 2;
+                zoom(1.1, center);
                 e.consume();
             }
             default -> { } // do nothing
