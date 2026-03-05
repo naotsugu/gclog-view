@@ -7,10 +7,10 @@ A simple viewer for GC log files.
 
 ## Usage
 
-- Drop a GC log file onto the window, or press `Ctrl`(`⌘`) + `o` to select a log file.
-- You can zoom in and out of the graph with `Ctrl`(`⌘`) + mouse wheel, or `+` and `-` keys.
-- You can pan the graph by dragging it or using `←` and `→` keys.
-- Double-click on the graph to manually set the X-axis range.
+- Open a log file by dropping it onto the window or pressing `Ctrl`(`⌘`) + `o`.
+- Zoom the graph using `Ctrl`(`⌘`) + mouse wheel, or the `+` and `-` keys.
+- Pan the graph by dragging with the mouse or using the `←` and `→` keys.
+- Set the X-axis range manually by double-clicking the graph.
 
 
 ## Installing
@@ -20,10 +20,8 @@ Launch the application by running the executable file.
 
 ### Launching on macOS
 
-By default, macOS only allows applications from the official App Store.
-
-If you can't run the downloaded application, you may need to remove the quarantine attribute.
-This will bypass the security warning.
+macOS may prevent running applications from unidentified developers.
+If you cannot run the application, you may need to remove the quarantine attribute to bypass the security warning.
 
 1.  Open a Terminal window.
 2.  Run the following command:
