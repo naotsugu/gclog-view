@@ -2,7 +2,7 @@
 
 A simple viewer for GC log files.
 
-![screenshot1](docs/images/screenshot-01.png)
+![screenshot1](docs/images/screenshot-01.gif)
 
 
 ## Usage
