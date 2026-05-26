@@ -1,6 +1,6 @@
 # gclog-view
 
-A simple viewer for GC log files.
+A simple viewer for GC log files, using [gctoolkit](https://github.com/microsoft/gctoolkit).
 
 ![screenshot1](docs/images/screenshot-01.gif)
 
